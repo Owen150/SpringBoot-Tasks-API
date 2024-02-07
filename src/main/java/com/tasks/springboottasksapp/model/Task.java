@@ -2,9 +2,13 @@ package com.tasks.springboottasksapp.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.Date;
 
 @Entity
-@Table(name="Tasks")
+@Table(name = "Tasks")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -17,5 +21,14 @@ public class Task {
     private String name;
     private String description;
     private String status;
-    private String date;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date")
+    private Date created_at;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modify_date")
+    private Date updated_at;
 }

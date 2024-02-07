@@ -88,7 +88,6 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //Review
     @DeleteMapping("/deleteAllTasks")
     public ResponseEntity<HttpStatus> deleteAllTasks(){
         taskRepository.deleteAll();
