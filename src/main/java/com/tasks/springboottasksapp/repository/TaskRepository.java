@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    //Query Methods
-    //Retrieve a list of tasks by their status
+    //Query Methods - Find Information from the Database
+    //Retrieve a List of Tasks by their Status
     List<Task> findTaskByStatus(String status);
 }

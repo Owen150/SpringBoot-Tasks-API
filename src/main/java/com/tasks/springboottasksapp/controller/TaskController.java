@@ -18,9 +18,12 @@ public class TaskController {
 
     @PostMapping("/addTask")
     public ResponseEntity<Task> addTask(@RequestBody Task task){
-        Task taskObj = taskRepository.save(task);
-
-        return new ResponseEntity<>(taskObj, HttpStatus.OK);
+        try {
+            Task taskObj = taskRepository.save(task);
+            return new ResponseEntity<>(taskObj, HttpStatus.OK);
+        } catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/getAllTasks")
@@ -67,25 +70,39 @@ public class TaskController {
 
     @GetMapping("/getTaskByStatus/{status}")
     public ResponseEntity<List<Task>> getTaskByStatus(@PathVariable String status){
-        List<Task> taskByStatus = new ArrayList<>();
-        taskRepository.findTaskByStatus(status).forEach(taskByStatus::add);
+        try {
+            List<Task> taskByStatus = new ArrayList<>();
+            taskRepository.findTaskByStatus(status).forEach(taskByStatus::add);
 
-        if (taskByStatus.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            //Correct User Input but Empty Task List
+            if (taskByStatus.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(taskByStatus, HttpStatus.OK);
+        } catch (Exception ex){
+            //Wrong User Input
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(taskByStatus, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteTaskById/{id}")
     public ResponseEntity<HttpStatus> deleteTaskById(@PathVariable Long id){
-        taskRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            taskRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/deleteAllTasks")
     public ResponseEntity<HttpStatus> deleteAllTasks(){
-        taskRepository.deleteAll();
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            taskRepository.deleteAll();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 }
