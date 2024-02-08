@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,40 +19,35 @@ public class TaskController {
     public ResponseEntity<Task> addTask(@RequestBody Task task){
         try {
             Task taskObj = taskRepository.save(task);
-            return new ResponseEntity<>(taskObj, HttpStatus.OK);
+            return new ResponseEntity<>(taskObj, HttpStatus.CREATED);
         } catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/getAllTasks")
     public ResponseEntity<List<Task>> getAllTasks(){
-        try {
-            List<Task> taskList = new ArrayList<>();
-            taskRepository.findAll().forEach(taskList::add);
+        List<Task> taskList = taskRepository.findAll();
 
-            if (taskList.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(taskList, HttpStatus.OK);
-        } catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (taskList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+        return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
     @GetMapping("/getTaskById/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id){
-        Optional<Task> taskData = taskRepository.findById(id);
+        Optional<Task> task = taskRepository.findById(id);
 
-        if (taskData.isPresent()){
-            return new ResponseEntity<>(taskData.get(), HttpStatus.OK);
+        if (task.isPresent()){
+            return new ResponseEntity<>(task.get(), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/updateTaskStatus/{id}")
+    @PatchMapping("/updateTaskStatus/{id}")
     public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody Task newTaskData){
         Optional<Task> oldTaskData = taskRepository.findById(id);
 
@@ -71,26 +65,26 @@ public class TaskController {
     @GetMapping("/getTaskByStatus/{status}")
     public ResponseEntity<List<Task>> getTaskByStatus(@PathVariable String status){
         try {
-            List<Task> taskByStatus = new ArrayList<>();
-            taskRepository.findTaskByStatus(status).forEach(taskByStatus::add);
+            List<Task> taskByStatus = taskRepository.findTaskByStatus(status);
 
-            //Correct User Input but Empty Task List
             if (taskByStatus.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(taskByStatus, HttpStatus.OK);
         } catch (Exception ex){
-            //Wrong User Input
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/deleteTaskById/{id}")
-    public ResponseEntity<HttpStatus> deleteTaskById(@PathVariable Long id){
+    public ResponseEntity<List<Task>> deleteTaskById(@PathVariable Long id){
         try {
             taskRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            List<Task> remainingTasks = taskRepository.findAll();
+
+            return new ResponseEntity<>(remainingTasks, HttpStatus.OK);
         } catch (Exception ex){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

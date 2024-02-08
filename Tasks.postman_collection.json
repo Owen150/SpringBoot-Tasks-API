@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "17dd7b61-8354-4548-9ae0-47f19ae335f0",
+		"name": "Tasks",
+		"description": "Task Management System REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13047980"
+	},
+	"item": [
+		{
+			"name": "Add Task",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Task 4\",\r\n    \"description\": \"Fourth Task\",\r\n    \"status\": \"Completed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/addTask",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addTask"
+					]
+				},
+				"description": "\n# Add Task\n\nThis endpoint allows you to add a new task.\n\n## Request Body\n- `name` (string, required): The name of the task.\n- `description` (string, required): The description of the task.\n- `status` (string, required): The status of the task.\n\n## Response\nUpon successful execution, the server returns a JSON object with the following fields:\n- `id` (number): The unique identifier of the task.\n- `name` (string): The name of the task.\n- `description` (string): The description of the task.\n- `status` (string): The status of the task.\n- `created_at` (string): The timestamp when the task was created.\n- `updated_at` (string): The timestamp when the task was last updated.\n\nExample:\n```json\n{\n  \"id\": 0,\n  \"name\": \"\",\n  \"description\": \"\",\n  \"status\": \"\",\n  \"created_at\": \"\",\n  \"updated_at\": \"\"\n}\n```\n\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/getAllTasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getAllTasks"
+					]
+				},
+				"description": "This endpoint makes an HTTP GET request to retrieve all tasks. The response will be in JSON format with an array of task objects, each containing the task's ID, name, description, status, creation date, and last update date."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/getTaskById/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getTaskById",
+						"6"
+					]
+				},
+				"description": "This endpoint makes an HTTP GET request to retrieve a task by its ID. It fetches the task details based on the provided task ID.\n\nThe response to the request returns a JSON object with the following properties:\n\n- id (number): The ID of the task.\n- name (string): The name of the task.\n- description (string): The description of the task.\n- status (string): The status of the task.\n- created_at (string): The timestamp indicating when the task was created.\n- updated_at (string): The timestamp indicating when the task was last updated.\n    \n\nThe status code for a successful request is 200, and the Content-Type of the response is application/json."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Task Status",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"Pending\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/updateTaskStatus/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"updateTaskStatus",
+						"2"
+					]
+				},
+				"description": "This endpoint is used to update the status of a task with the specified ID. The HTTP PATCH request should be sent to [http://localhost:8080/updateTaskStatus/2](http://localhost:8080/updateTaskStatus/2) with the task ID in the URL path. The request body should be in raw format and include the \"status\" field to update the task status.\n\n### Request Body\n\n- `status` (string, required): The new status to be assigned to the task.\n    \n\n### Response\n\nUpon a successful execution, the server will respond with a status code of 200 and a JSON object containing the updated details of the task, including its ID, name, description, status, creation timestamp, and last update timestamp.\n\nExample Response:\n\n``` json\n{\n    \"id\": 0,\n    \"name\": \"\",\n    \"description\": \"\",\n    \"status\": \"\",\n    \"created_at\": \"\",\n    \"updated_at\": \"\"\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task by Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/getTaskByStatus/Completed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getTaskByStatus",
+						"Completed"
+					]
+				},
+				"description": "This endpoint makes an HTTP GET request to retrieve tasks by their status, specifically \"Completed\". The response will contain a JSON array of tasks, each including an id, name, description, status, creation timestamp, and last update timestamp."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Tasks",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deleteAllTasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deleteAllTasks"
+					]
+				},
+				"description": "\n### Delete All Tasks\nThis endpoint is used to delete all tasks.\n\n#### HTTP Request\n  - Method: DELETE\n  - Endpoint: `http://localhost:8080/deleteAllTasks`\n\n#### Response\nThe response will have a status code of 200 and the content type will be `text/xml`.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Task by Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deleteTaskById/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deleteTaskById",
+						"4"
+					]
+				},
+				"description": "### Delete Task by ID\n\nThis endpoint is used to delete a specific task by its ID.\n\n#### Request\n\n- Method: DELETE\n- Endpoint: `http://localhost:8080/deleteTaskById/4`\n    \n\n#### Response\n\n- Status: 200\n- Content Type: text/xml\n- Body: null"
+			},
+			"response": []
+		}
+	]
+}
