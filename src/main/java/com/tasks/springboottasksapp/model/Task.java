@@ -24,11 +24,9 @@ public class Task {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_date")
     private Date created_at;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modify_date")
     private Date updated_at;
 }

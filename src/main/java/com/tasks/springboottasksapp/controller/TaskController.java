@@ -50,7 +50,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/updateTaskStatus/{id}")
+    @PutMapping("/updateTaskStatus/{id}")
     public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody Task newTaskData){
         Optional<Task> oldTaskData = taskRepository.findById(id);
 
@@ -65,21 +65,16 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //Review
-    @GetMapping("/getTaskByStatus")
-    public ResponseEntity<List<Task>> getTaskByStatus(){
-        try{
-            List<Task> taskByStatus = taskRepository.findTaskByStatus("pending");
-            taskRepository.findAll().forEach(taskByStatus::add);
+    @GetMapping("/getTaskByStatus/{status}")
+    public ResponseEntity<List<Task>> getTaskByStatus(@PathVariable String status){
+        List<Task> taskByStatus = new ArrayList<>();
+        taskRepository.findTaskByStatus(status).forEach(taskByStatus::add);
 
-            if (taskByStatus.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(taskByStatus, HttpStatus.OK);
-        } catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (taskByStatus.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+        return new ResponseEntity<>(taskByStatus, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteTaskById/{id}")
