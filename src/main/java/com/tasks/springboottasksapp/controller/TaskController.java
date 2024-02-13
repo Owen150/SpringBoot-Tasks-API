@@ -36,6 +36,8 @@ public class TaskController {
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
+    //Client - Server: Path Variable
+
     @GetMapping("/getTaskById/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id){
         Optional<Task> task = taskRepository.findById(id);
@@ -77,8 +79,9 @@ public class TaskController {
         }
     }
 
-    @DeleteMapping("/deleteTaskById/{id}")
-    public ResponseEntity<List<Task>> deleteTaskById(@PathVariable Long id){
+    // Client - Server: Query Parameters
+    @DeleteMapping("/deleteTaskById")
+    public ResponseEntity<List<Task>> deleteTaskById(@RequestParam Long id){
         try {
             taskRepository.deleteById(id);
 

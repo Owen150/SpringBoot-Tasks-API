@@ -1,4 +1,6 @@
 package com.tasks.springboottasksapp.service;
 
-public class TaskService {
+import com.tasks.springboottasksapp.repository.TaskRepository;
+
+public interface TaskService {
 }
